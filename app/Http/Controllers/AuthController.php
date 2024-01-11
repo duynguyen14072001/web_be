@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\StatusUser;
+use App\Enums\StatusUserEnum;
 use App\Models\PasswordResetTokens;
 use App\Mail\SendEmailResetPasswordLink;
 use App\Mail\SendMailVerifyAccount;
@@ -19,8 +19,8 @@ class AuthController extends Controller
     public  $status_code = 200;
     public function register(Request $request)
     {
-        if (User::where('email', $request->email)->where('status', StatusUser::INACTIVE)->first()) {
-            User::where('email', $request->email)->where('status', StatusUser::INACTIVE)->first()->delete();
+        if (User::where('email', $request->email)->where('status', StatusUserEnum::INACTIVE)->first()) {
+            User::where('email', $request->email)->where('status', StatusUserEnum::INACTIVE)->first()->delete();
         }
         $validator = Validator::make(
             $request->all(),
@@ -49,11 +49,11 @@ class AuthController extends Controller
                 400
             );
         }
-        if (User::where('nickname', $request->nickname)->whereNull('anonymous_id')->first()) {
+        if (User::where('username', $request->username)->first()) {
             return response()->json(
                 [
                     'status' => 'failed',
-                    'errors' => 'There are already people using this nickname',
+                    'errors' => 'There are already people using this username',
                     'success' => false
                 ],
                 400
@@ -67,7 +67,7 @@ class AuthController extends Controller
             'nickname' => $request->nickname,
         );
         $user = User::create($userDataArray);
-        $user->status = StatusUser::INACTIVE;
+        $user->status = StatusUserEnum::INACTIVE;
         $user->save();
         if ($request->user_id) {
             $inviter = User::where('id', $request->user_id)->first();
@@ -114,7 +114,7 @@ class AuthController extends Controller
                 400
             );
         }
-        if (User::where('email', $request->email)->where('status', StatusUser::INACTIVE)->first()) {
+        if (User::where('email', $request->email)->where('status', StatusUserEnum::INACTIVE)->first()) {
             return response()->json(
                 [
                     'status' => 'failed',
@@ -257,7 +257,7 @@ class AuthController extends Controller
     {
         $user = User::where('email', $request->email)->first();
         if ($user) {
-            $user->status = StatusUser::ACTIVE;
+            $user->status = StatusUserEnum::ACTIVE;
             $user->save();
             return response()->json(["status" => "success", "success" => true, "message" => "Verification completed"], 200);
         }
