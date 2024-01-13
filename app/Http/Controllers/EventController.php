@@ -11,6 +11,6 @@ class EventController extends Controller
     public function listEvent($id)
     {
         $events = Event::where('team_id', $id);
-        return response()->json(["status" => $this->status_code, "success" => true, "message" => "Register successfully", "data" => $events]);
+        return response()->json(["status" => $this->status_code, "success" => true, "message" => "List event", "data" => $events]);
     }
 }

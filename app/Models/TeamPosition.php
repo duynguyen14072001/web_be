@@ -9,4 +9,9 @@ class TeamPosition extends Model
 {
     use HasFactory;
     public $table = "team_positions";
+
+    protected $fillable = [
+        'name',
+        'team_id',
+    ];
 }

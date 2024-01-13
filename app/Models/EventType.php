@@ -10,4 +10,10 @@ class EventType extends Model
     use HasFactory;
 
     public $table = "event_types";
+
+    protected $fillable = [
+        'name',
+        'team_id',
+        'team_id',
+    ];
 }
