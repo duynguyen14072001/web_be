@@ -5,12 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TeamType extends Model
+class Booking extends Model
 {
     use HasFactory;
-    public $table = "team_types";
+    public $table = "bookings";
 
     protected $fillable = [
-        'name',
+        'user_id',
+        'doctor_id',
+        'appointment_date',
+        'time_from',
+        'time_to',
     ];
 }

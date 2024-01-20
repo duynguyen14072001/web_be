@@ -26,15 +26,17 @@ class AuthController extends Controller
             $request->all(),
             [
                 "email"                 =>          "required|email|unique:users,email",
-                "nickname"              =>          "required",
+                "username"              =>          "required",
                 "password"              =>          "required|min:6",
+                "role"                  =>          "required",
             ],
             [
                 "email.required"                        =>        "Please enter e-mail address",
                 "email.unique"                          =>        "Email already exists",
-                "nickname.required"                     =>        "Please enter nickname",
+                "username.required"                     =>        "Please enter username",
                 "email.email"                           =>        "Please enter valid e-mail address",
                 "password.required"                     =>        "Please enter password",
+                "role.required"                         =>        "Please enter role",
             ]
         );
         if ($validator->fails()) {
@@ -64,7 +66,8 @@ class AuthController extends Controller
             "password"  => bcrypt($request->password),
             'time_end_penalty' => config('config.time_end_penalty_default'),
             'time_end_cool_down' => config('config.time_end_cool_down_default'),
-            'nickname' => $request->nickname,
+            'username' => $request->username,
+            'role' => $request->role,
         );
         $user = User::create($userDataArray);
         $user->status = StatusUserEnum::INACTIVE;
@@ -81,7 +84,7 @@ class AuthController extends Controller
         //     $user['token'] = $token;
         $fe_url = config('config.fe_url');
         $url = $fe_url . 'verify-email?email=' . $user->email;
-        Mail::send(new SendMailVerifyAccount($user->email, $user->nickname, $url));
+        Mail::send(new SendMailVerifyAccount($user->email, $user->username, $url));
         return response()->json(["status" => $this->status_code, "success" => true, "message" => "Register successfully", "data" => $user]);
         // }
         // return response()->json(["status" => "failed", "success" => false, "errors" => "Unable to login. Incorrect password or email"], 400);
@@ -177,7 +180,7 @@ class AuthController extends Controller
                 $token = $t;
                 $fe_url = config('config.fe_url');
                 $url = $fe_url . "set-new-password?email=" . $email . "&token=" . $token;
-                Mail::send(new SendEmailResetPasswordLink($email, $url, $user->nickname));
+                Mail::send(new SendEmailResetPasswordLink($email, $url, $user->username));
             });
 
             $existingPasswordReset = PasswordResetTokens::where('email', $email)

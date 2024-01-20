@@ -11,8 +11,8 @@ use BenSampo\Enum\Enum;
  * @method static static OptionTwo()
  * @method static static OptionThree()
  */
-final class StatusTeamEnum extends Enum
+final class GenderEnum extends Enum
 {
-    const YES = "YES";
-    const NO = "NO";
+    const MALE = "MALE";
+    const FEMALE = "FEMALE";
 }

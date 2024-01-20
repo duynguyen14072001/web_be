@@ -11,8 +11,9 @@ use BenSampo\Enum\Enum;
  * @method static static OptionTwo()
  * @method static static OptionThree()
  */
-final class StatusEventEnum extends Enum
+final class RoleUser extends Enum
 {
-    const PRIVATE = "PRIVATE";
-    const PUBLIC = "PUBLIC";
+    const ADMIN = "ADMIN";
+    const DOCTOR = "DOCTOR";
+    const PATIENT = "PATIENT";
 }

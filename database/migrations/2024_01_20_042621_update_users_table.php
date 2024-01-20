@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\RoleUser;
+use App\Enums\StatusUserEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,12 +13,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('team_positions', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->unsignedBigInteger('team_id');
-            $table->foreign('team_id')->references('id')->on('teams')->cascadeOnDelete();
-            $table->timestamps();
+        Schema::create('users', function (Blueprint $table) {
+            $table->enum('status', array(StatusUserEnum::ACTIVE, StatusUserEnum::INACTIVE))->after('password');
+            $table->enum('role', array(RoleUser::DOCTOR, RoleUser::ADMIN, RoleUser::PATIENT))->after('status');
         });
     }
 
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('team_positions');
+        //
     }
 };
