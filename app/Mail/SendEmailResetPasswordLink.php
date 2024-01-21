@@ -16,7 +16,7 @@ class SendEmailResetPasswordLink extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(private string $email, private string $user_name, private string $url)
+    public function __construct(private string $email, private string $username, private string $url)
     {
         //
     }

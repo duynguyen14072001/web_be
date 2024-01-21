@@ -16,5 +16,6 @@ class Booking extends Model
         'appointment_date',
         'time_from',
         'time_to',
+        'status',
     ];
 }
