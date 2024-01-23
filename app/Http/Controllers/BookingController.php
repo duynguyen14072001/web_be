@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RoleUser;
 use App\Enums\StatusBooking;
 use App\Mail\SendMailCreateBookingForDoctor;
 use App\Mail\SendMailCreateBookingForUser;
@@ -61,6 +62,18 @@ class BookingController extends Controller
             );
         }
 
+        $user = User::where('id', $request->user_id)->first();
+        $doctor = User::where('id', $request->doctor_id)->first();
+        if ($doctor->role != RoleUser::DOCTOR) {
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'errors' => 'Need to make an appointment with your doctor',
+                ],
+                400
+            );
+        }
+
         if ($request->time_from->gt($request->time_to)) {
             return response()->json(
                 [
@@ -108,8 +121,6 @@ class BookingController extends Controller
                 "status" => StatusBooking::WAITING,
             );
             $booking = Booking::create($bookingDataArray);
-            $user = User::where('id', $request->user_id)->first();
-            $doctor = User::where('id', $request->doctor_id)->first();
             Mail::send(new SendMailCreateBookingForUser($user->email, $user->username));
             Mail::send(new SendMailCreateBookingForDoctor($doctor->email, $doctor->username));
             return response()->json(["status" => $this->status_code, "success" => true, "message" => "Create successfully", "data" => $booking]);

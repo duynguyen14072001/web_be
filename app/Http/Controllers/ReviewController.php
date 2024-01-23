@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RoleUser;
 use App\Models\Review;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -41,6 +43,16 @@ class ReviewController extends Controller
                     'status' => 'failed',
                     'message' => 'validation_error',
                     'errors' => $validator->errors()
+                ],
+                400
+            );
+        }
+        $doctor = User::where('id', $request->doctor_id)->first();
+        if ($doctor->role != RoleUser::DOCTOR) {
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'errors' => 'Need to review with doctor',
                 ],
                 400
             );
