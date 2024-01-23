@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('bookings', function (Blueprint $table) {
-            $table->enum('status', array(StatusBooking::FAIL, StatusBooking::SUCCESS, StatusBooking::WAITING))->after('time_to');
+            $table->enum('status', [StatusBooking::FAIL, StatusBooking::SUCCESS, StatusBooking::WAITING])->after('time_to');
         });
     }
 

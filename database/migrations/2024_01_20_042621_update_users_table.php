@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->enum('status', array(StatusUserEnum::ACTIVE, StatusUserEnum::INACTIVE))->after('password');
-            $table->enum('role', array(RoleUser::DOCTOR, RoleUser::ADMIN, RoleUser::PATIENT))->after('status');
+        Schema::table('users', function (Blueprint $table) {
+            $table->enum('status', [StatusUserEnum::ACTIVE, StatusUserEnum::INACTIVE])->after('password');
+            $table->enum('role', [RoleUser::DOCTOR, RoleUser::ADMIN, RoleUser::PATIENT])->after('status');
         });
     }
 
