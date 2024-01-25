@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +29,8 @@ Route::get('verify-token', [AuthController::class, 'verifyToken']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('update-profile', [UserController::class, 'updateProfile']);
+
+    Route::post('create-booking', [BookingController::class, 'createBooking']);
+
+    Route::post('create-review', [ReviewController::class, 'createReview']);
 });

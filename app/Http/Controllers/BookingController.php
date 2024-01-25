@@ -12,7 +12,6 @@ use App\Mail\SendMailSuccessBookingForUser;
 use App\Models\Booking;
 use App\Models\User;
 use BenSampo\Enum\Rules\Enum;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,8 +21,9 @@ use Illuminate\Support\Facades\Validator;
 class BookingController extends Controller
 {
     public  $status_code = 200;
-    public function listBooking($user_id)
+    public function listBooking()
     {
+        $user_id = Auth::user()->id;
         $bookings = Booking::where('user_id', $user_id)->get();
         if ($bookings) {
             return response()->json(["status" => $this->status_code, "success" => true, "message" => "List bookings", "data" => $bookings]);
