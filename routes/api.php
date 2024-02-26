@@ -34,3 +34,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('create-review', [ReviewController::class, 'createReview']);
 });
+
+
+Route::post('create-booking', [BookingController::class, 'createBooking']);

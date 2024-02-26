@@ -11,7 +11,7 @@ class CreateBookingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,22 @@ class CreateBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "user_id" => 'required',
+            'doctor_id' => 'required',
+            'appointment_date' => 'required',
+            'time_from' => 'required',
+            'time_to' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            "user_id.required" => "Please enter major name",
+            "doctor_id.required" => "Please choose doctor",
+            "appointment_date.required" => "Please enter appointment date",
+            "time_from.required" => "Please choose time start",
+            "time_to.required" => "Please choose time end",
         ];
     }
 }

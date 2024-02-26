@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\RoleUser;
 use App\Enums\StatusBooking;
+use App\Http\Requests\Booking\CreateBookingRequest;
 use App\Mail\SendMailCreateBookingForDoctor;
 use App\Mail\SendMailCreateBookingForUser;
 use App\Mail\SendMailFailBookingForUser;
@@ -31,37 +32,36 @@ class BookingController extends Controller
         return response()->json(["status" => $this->status_code, "success" => true, "message" => "No data"]);
     }
 
-    public function createBooking(Request $request)
+    public function createBooking(CreateBookingRequest $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                "user_id" => 'required',
-                'doctor_id' => 'required',
-                'appointment_date' => 'required',
-                'time_from' => 'required',
-                'time_to' => 'required',
-            ],
-            [
-                "user_id.required" => "Please enter major name",
-                "doctor_id.required" => "Please choose doctor",
-                "appointment_date.required" => "Please enter appointment date",
-                "time_from.required" => "Please choose time start",
-                "time_to.required" => "Please choose time end",
-            ]
-        );
+        // $validator = Validator::make(
+        //     $request->all(),
+        //     [
+        //         "user_id" => 'required',
+        //         'doctor_id' => 'required',
+        //         'appointment_date' => 'required',
+        //         'time_from' => 'required',
+        //         'time_to' => 'required',
+        //     ],
+        //     [
+        //         "user_id.required" => "Please enter major name",
+        //         "doctor_id.required" => "Please choose doctor",
+        //         "appointment_date.required" => "Please enter appointment date",
+        //         "time_from.required" => "Please choose time start",
+        //         "time_to.required" => "Please choose time end",
+        //     ]
+        // );
 
-        if ($validator->fails()) {
-            return response()->json(
-                [
-                    'status' => 'failed',
-                    'message' => 'validation_error',
-                    'errors' => $validator->errors()
-                ],
-                400
-            );
-        }
-
+        // if ($validator->fails()) {
+        //     return response()->json(
+        //         [
+        //             'status' => 'failed',
+        //             'message' => 'validation_error',
+        //             'errors' => $validator->errors()
+        //         ],
+        //         400
+        //     );
+        // }
         $user = User::where('id', $request->user_id)->first();
         $doctor = User::where('id', $request->doctor_id)->first();
         if ($doctor->role != RoleUser::DOCTOR) {
