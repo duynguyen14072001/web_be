@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\User\UpdateProfileRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,27 +20,27 @@ class UserController extends Controller
         return response()->json(["status" => "failed", "success" => false, "errors" => "User not found"], 400);
     }
 
-    public function updateProfile(UpdateProfileRequest $request)
+    public function updateProfile(Request $request)
     {
         $user = Auth::user();
-        // $validator = Validator::make(
-        //     $request->all(),
-        //     [
-        //         "new_password" => "min:6",
-        //     ]
-        // );
-        // if ($validator->fails()) {
-        //     return response()->json(
-        //         [
-        //             'status' => 'failed',
-        //             "success" => false,
-        //             'error' => [
-        //                 "message" => $validator->errors()->first()
-        //             ],
-        //         ],
-        //         400
-        //     );
-        // }
+        $validator = Validator::make(
+            $request->all(),
+            [
+                "new_password" => "min:6",
+            ]
+        );
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    "success" => false,
+                    'error' => [
+                        "message" => $validator->errors()->first()
+                    ],
+                ],
+                400
+            );
+        }
         if (User::where('username', $request->username)->where('id', '<>', $user->id)->first()) {
             return response()->json(
                 [
