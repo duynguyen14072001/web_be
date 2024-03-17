@@ -18,4 +18,6 @@ class Booking extends Model
         'time_to',
         'status',
     ];
+
+    ////
 }
